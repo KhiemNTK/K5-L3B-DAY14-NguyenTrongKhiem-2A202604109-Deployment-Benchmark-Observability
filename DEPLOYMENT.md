@@ -56,7 +56,7 @@ curl -i -X POST https://k5-l3b-day14-nguyentrongkhiem-2a202604109-deploy-staging
 **Expected Response:** `HTTP/1.1 401 Unauthorized`
 ```json
 {
-  "detail": "Invalid or missing API Key"
+  "detail": "Invalid or missing API key. Include header: X-API-Key: <key>"
 }
 ```
 
