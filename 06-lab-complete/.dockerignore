@@ -5,3 +5,21 @@
 #   • virtualenv: venv/, .venv/
 #   • .git/, tài liệu, thư mục benchmark-observability/ (Part 7)...
 # ============================================================
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+benchmark-observability/
+reports/
+screenshots/
+*.md
