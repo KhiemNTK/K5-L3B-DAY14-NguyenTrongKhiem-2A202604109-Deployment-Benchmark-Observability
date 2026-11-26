@@ -1,37 +1,33 @@
-# ==========================================
-# STAGE 1: The Build Environment
-# ==========================================
-# We use a large image that includes the Go compiler and tools
-FROM golang:1.22 AS builder
+# Multi-stage build for Production AI Agent
+FROM python:3.11-slim AS builder
+
+WORKDIR /build
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY 06-lab-complete/requirements.txt requirements.txt
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+FROM python:3.11-slim AS runtime
 
 WORKDIR /app
 
-# Copy the rest of the source code
-COPY . .
+RUN groupadd -r appuser && useradd -r -g appuser appuser
 
-# Compile the application into a single, statically-linked binary named "myapp"
-RUN CGO_ENABLED=0 go build -o myapp .
+COPY --from=builder /root/.local /home/appuser/.local
+ENV PATH=/home/appuser/.local/bin:$PATH \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
 
-# ==========================================
-# STAGE 2: The Production Environment
-# ==========================================
-# We switch to a completely fresh, microscopic image for production
-FROM alpine:3.19
+COPY --chown=appuser:appuser 06-lab-complete/ .
 
-WORKDIR /app
-
-# Tạo non-root user
-RUN addgroup -S appuser && adduser -S appuser -G appuser
-
-# Đặt ownership cho appuser
-RUN chown -R appuser:appuser /app
-
-# Chuyển sang non-root user
 USER appuser
 
-# CRITICAL STEP: Copy ONLY the compiled binary from the 'builder' stage
-COPY --from=builder /app/myapp .
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:' + str(__import__('os').getenv('PORT', 8000)) + '/health')" || exit 1
 
-# Expose port and define the command to run the app
-EXPOSE 8080
-CMD ["./myapp"]
+EXPOSE 8000
+
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 2"]

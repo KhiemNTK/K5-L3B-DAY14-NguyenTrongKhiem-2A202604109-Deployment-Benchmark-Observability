@@ -293,14 +293,14 @@ X-XSS-Protection: 1; mode=block
 
 Theo đúng định hướng của lớp K5 (Checkpoint 6), tôi triển khai trực tiếp mã nguồn production của **Part 6** (`06-lab-complete/`) kèm theo một instance **Redis Cloud** trên nền tảng Railway.
 
-- **Public Service URL:** `https://k5-day14-agent-production.up.railway.app`
+- **Public Service URL:** `https://k5-l3b-day14-nguyentrongkhiem-2a202604109-deploy-staging.up.railway.app`
 - **Nền tảng:** Railway (PaaS)
 - **Cấu hình môi trường đã đặt trên Dashboard:**
   - `PORT=8000` (Railway inject động)
   - `ENVIRONMENT=production`
   - `AGENT_API_KEY=k5-aicb-sec-2a202604109-prod`
-  - `REDIS_URL=redis://default:***@roundhouse.proxy.rlwy.net:45821`
-  - `RATE_LIMIT_PER_MINUTE=60`
+  - `REDIS_URL=redis://default:***@redis.railway.internal:6379`
+  - `RATE_LIMIT_PER_MINUTE=10`
   - `DAILY_BUDGET_USD=10.0`
 - **Ảnh chụp bằng chứng:**
   - Dashboard tổng quan: [`screenshots/dashboard.png`](screenshots/dashboard.png)
@@ -310,7 +310,7 @@ Theo đúng định hướng của lớp K5 (Checkpoint 6), tôi triển khai tr
 #### Kết quả 4 lệnh tự kiểm tra chuẩn CP6 (không làm lộ API Key):
 
 ```bash
-BASE="https://k5-day14-agent-production.up.railway.app"
+BASE="https://k5-l3b-day14-nguyentrongkhiem-2a202604109-deploy-staging.up.railway.app"
 AGENT_API_KEY="k5-aicb-sec-2a202604109-prod"
 
 # 1. Health check (Liveness)

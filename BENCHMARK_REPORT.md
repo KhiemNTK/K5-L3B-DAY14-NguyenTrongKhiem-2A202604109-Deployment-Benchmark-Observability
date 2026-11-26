@@ -2,6 +2,7 @@
 
 **Họ tên:** Nguyễn Trọng Khiêm  
 **MSSV:** 2A202604109  
+**Lớp:** K5-L3B · AICB-P1 · VinUniversity 2026  
 **Ngày chạy:** 26/11/2026  
 **Môi trường thực nghiệm:** Windows 11 Pro 64-bit / WSL2 Ubuntu 22.04 LTS, Docker Desktop (4 vCPU, 8GB RAM), Python 3.11.9, Redis 7.2-alpine, Prometheus v3.16.0, Jaeger 1.50, Grafana 10.2.0, Nginx 1.25-alpine.
 
